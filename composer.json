@@ -1,0 +1,20 @@
+{
+  "name":         "becklyn/static-roles-bundle",
+  "description":  "This bundle provides a simple way to define all available roles and their hierarchy in your configuration",
+  "keywords":     ["security", "symfony"],
+  "license":      "BSD-3-Clause",
+  "type":         "symfony-bundle",
+  "homepage":     "https://github.com/Becklyn/BecklynStaticRolesBundle",
+  "authors":      [
+    {
+      "name":     "Becklyn",
+      "homepage": "http://becklyn.com/"
+    }
+  ],
+  "require": {
+    "php": "^5.5"
+  },
+  "autoload":     {
+    "psr-4": { "Becklyn\\StaticRolesBundle\\": "" }
+  }
+}
