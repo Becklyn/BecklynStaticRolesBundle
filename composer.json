@@ -12,7 +12,9 @@
     }
   ],
   "require": {
-    "php": "^5.5"
+    "php": ">=5.5",
+    "symfony/config": "2.7",
+    "symfony/security-core": "^2.7"
   },
   "autoload":     {
     "psr-4": { "Becklyn\\StaticRolesBundle\\": "" }
