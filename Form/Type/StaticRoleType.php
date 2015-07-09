@@ -37,7 +37,7 @@ class StaticRoleType extends AbstractType
      */
     public function configureOptions (OptionsResolver $resolver)
     {
-        $allRoles = $this->roleCollection->getAllRoles();
+        $allRoles = $this->roleCollection->getAllAvailableRoles();
         $allRoleKeys = array_keys($allRoles);
 
         $resolver->setDefaults([
@@ -46,6 +46,12 @@ class StaticRoleType extends AbstractType
             "choice_label" => function ($choiceValue, $choiceKey, $index) use ($allRoles)
             {
                 return $allRoles[$choiceKey]->getDisplayName();
+            },
+            "choice_attr" => function ($choiceValue, $choiceKey, $index) use ($allRoles)
+            {
+                return [
+                    "data-role-description" => $allRoles[$choiceKey]->getDescription(),
+                ];
             },
         ]);
     }

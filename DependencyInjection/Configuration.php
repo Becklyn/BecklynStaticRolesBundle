@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode("title")->isRequired()->end()
                             ->scalarNode("description")->end()
+                            ->booleanNode("hidden")->defaultFalse()->end()
                             ->arrayNode("included_roles")
                                 ->prototype('scalar')->end()
                             ->end()

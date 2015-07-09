@@ -145,8 +145,14 @@ class RoleCollection
      *
      * @return Role[]
      */
-    public function getAllRoles ()
+    public function getAllAvailableRoles ()
     {
-        return $this->roleCollection;
+        return array_filter(
+            $this->roleCollection,
+            function (Role $role)
+            {
+                return !$role->isHidden();
+            }
+        );
     }
 }

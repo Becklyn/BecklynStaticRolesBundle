@@ -112,6 +112,25 @@ class User implements UserInterface
 ```
 
 
+Hidden roles
+------------
+
+If you are using roles, that should be used internally, but shouldn't be presented in the form type, you can add `hidden: true` to the role definition:
+
+```yml
+becklyn_static_roles:
+    roles:
+        ROLE_ADMIN:
+            title: "Admin"
+            included_roles: [ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ALLOWED_TO_SWITCH:
+            title: "Internal: The user is allowed to switch roles"
+            hidden: true
+```
+
+In this example, only `ROLE_ADMIN` will be selectable by the user.
+
+
 Note
 ----
 
