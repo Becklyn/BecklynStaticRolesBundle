@@ -17,12 +17,14 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     {
         $role = Role::createFromConfiguration("ROLE_TEST", [
             "title" => "title",
-            "description" => "description"
+            "description" => "description",
+            "hidden" => true,
         ]);
 
         $this->assertEquals("description", $role->getDescription());
         $this->assertEquals("title", $role->getTitle());
         $this->assertEquals("ROLE_TEST", $role->getRole());
+        $this->assertTrue($role->isHidden());
     }
 
 
@@ -33,5 +35,6 @@ class RoleTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($role->getTitle());
         $this->assertNull($role->getDescription());
+        $this->assertFalse($role->isHidden());
     }
 }

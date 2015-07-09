@@ -27,6 +27,14 @@ class Role extends BaseRole
 
 
     /**
+     * Whether the role should be hidden when providing a list of available roles to the user
+     *
+     * @var boolean
+     */
+    private $hidden;
+
+
+    /**
      * A list of all included roles
      *
      * @var Role[]
@@ -41,12 +49,14 @@ class Role extends BaseRole
      * @param string      $role
      * @param null|string $title
      * @param null|string $description
+     * @param boolean     $hidden
      */
-    public function __construct ($role, $title, $description)
+    public function __construct ($role, $title, $description, $hidden)
     {
         parent::__construct($role);
         $this->title       = $title;
         $this->description = $description;
+        $this->hidden      = $hidden;
     }
 
 
@@ -64,7 +74,8 @@ class Role extends BaseRole
         return new Role(
             $role,
             isset($configuration["title"]) ? $configuration["title"] : null,
-            isset($configuration["description"]) ? $configuration["description"] : null
+            isset($configuration["description"]) ? $configuration["description"] : null,
+            isset($configuration["hidden"]) ? $configuration["hidden"] : false
         );
     }
 
@@ -118,5 +129,15 @@ class Role extends BaseRole
     public function getDisplayName ()
     {
         return trim("{$this->getTitle()} ({$this->getRole()})");
+    }
+
+
+
+    /**
+     * @return boolean
+     */
+    public function isHidden ()
+    {
+        return $this->hidden;
     }
 }
