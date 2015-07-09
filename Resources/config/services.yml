@@ -10,3 +10,11 @@ services:
             - @becklyn.static_roles.role_collection
         tags:
             - { name: security.voter }
+
+
+    becklyn.static_roles.form.type.static_role:
+        class: Becklyn\StaticRolesBundle\Form\Type\StaticRoleType
+        arguments:
+            - @becklyn.static_roles.role_collection
+        tags:
+            - { name: form.type, alias: static_role }

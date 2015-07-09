@@ -137,4 +137,16 @@ class RoleCollection
 
         return $normalized;
     }
+
+
+
+    /**
+     * Returns a list of all roles
+     *
+     * @return Role[]
+     */
+    public function getAllRoles ()
+    {
+        return $this->roleCollection;
+    }
 }

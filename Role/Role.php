@@ -107,4 +107,16 @@ class Role extends BaseRole
     {
         $this->includedRoles = $includedRoles;
     }
+
+
+
+    /**
+     * Returns the display name
+     *
+     * @return string
+     */
+    public function getDisplayName ()
+    {
+        return trim("{$this->getTitle()} ({$this->getRole()})");
+    }
 }
