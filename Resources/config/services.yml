@@ -1,0 +1,12 @@
+services:
+    becklyn.static_roles.role_collection:
+        class: Becklyn\StaticRolesBundle\Role\RoleCollection
+        arguments:
+            - ~ # set in the extension class
+
+    becklyn.static_roles.role_hierarchy_voter:
+        class: Becklyn\StaticRolesBundle\Voter\RoleHierarchyVoter
+        arguments:
+            - @becklyn.static_roles.role_collection
+        tags:
+            - { name: security.voter }
