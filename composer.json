@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": ">=5.5",
-    "symfony/config": "2.7",
+    "symfony/config": "^2.7",
     "symfony/security-core": "^2.7"
   },
   "autoload":     {
