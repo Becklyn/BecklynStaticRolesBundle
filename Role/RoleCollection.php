@@ -155,4 +155,19 @@ class RoleCollection
             }
         );
     }
+
+
+    /**
+     * Returns a Role by key
+     *
+     * @param string $roleKey
+     *
+     * @return Role|null
+     */
+    public function getRoleByKey ($roleKey)
+    {
+        return array_key_exists($roleKey, $this->roleCollection)
+            ? $this->roleCollection[$roleKey]
+            : null;
+    }
 }
