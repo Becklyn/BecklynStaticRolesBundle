@@ -7,7 +7,7 @@ services:
     becklyn.static_roles.role_hierarchy_voter:
         class: Becklyn\StaticRolesBundle\Voter\RoleHierarchyVoter
         arguments:
-            - @becklyn.static_roles.role_collection
+            - "@becklyn.static_roles.role_collection"
         tags:
             - { name: security.voter }
 
@@ -15,6 +15,6 @@ services:
     becklyn.static_roles.form.type.static_role:
         class: Becklyn\StaticRolesBundle\Form\Type\StaticRoleType
         arguments:
-            - @becklyn.static_roles.role_collection
+            - "@becklyn.static_roles.role_collection"
         tags:
             - { name: form.type, alias: static_role }
