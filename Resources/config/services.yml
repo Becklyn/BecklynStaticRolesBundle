@@ -18,3 +18,11 @@ services:
             - "@becklyn.static_roles.role_collection"
         tags:
             - { name: form.type, alias: static_role }
+
+
+    becklyn.static_roles.twig:
+        class: Becklyn\StaticRolesBundle\Twig\StaticRolesTwigExtension
+        arguments:
+            - "@becklyn.static_roles.role_collection"
+        tags:
+            - { name: twig.extension }

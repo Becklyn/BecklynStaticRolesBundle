@@ -180,6 +180,16 @@ $builder
 ```
 
 
+Twig helper functions
+---------------------
+
+```twig
+staticRoleTitle(key)
+```
+
+Returns the role title by key. Returns null if the role key is not found.
+
+
 Note
 ----
 
