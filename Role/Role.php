@@ -144,18 +144,6 @@ class Role extends BaseRole
 
 
     /**
-     * Returns the display name
-     *
-     * @return string
-     */
-    public function getDisplayName ()
-    {
-        return trim("{$this->getTitle()} ({$this->getRole()})");
-    }
-
-
-
-    /**
      * @return boolean
      */
     public function isHidden ()

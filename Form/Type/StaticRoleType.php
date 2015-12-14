@@ -67,7 +67,7 @@ class StaticRoleType extends AbstractType
             "choices_as_values" => true,
             "choice_label" => function ($choiceValue, $choiceKey, $index) use ($allRoles)
             {
-                return $allRoles[$choiceKey]->getDisplayName();
+                return $allRoles[$choiceKey]->getTitle();
             },
             "choice_attr" => function ($choiceValue, $choiceKey, $index) use ($allRoles)
             {
