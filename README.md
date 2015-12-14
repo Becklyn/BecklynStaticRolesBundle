@@ -49,6 +49,7 @@ becklyn_static_roles:
         ROLE_USER:
             title: "User"
             description: "The default frontend user"
+            tags: [tag1, tag2]
 ```
 
 
@@ -75,7 +76,7 @@ The mapping of these values can be done using the [`simple_array`][doctrine:simp
 class User implements UserInterface
 {
     // ...
-    
+
     /**
      * @var string[]
      *
@@ -105,7 +106,7 @@ class User implements UserInterface
     {
         $this->roles = $roles;
     }
-    
+
     // ...
 }
 
@@ -129,6 +130,54 @@ becklyn_static_roles:
 ```
 
 In this example, only `ROLE_ADMIN` will be selectable by the user.
+
+
+Tagging
+-------
+
+You can tag roles. This is a way to filter the visible roles in the form type. All roles that have at least one of your defined tags will be included.
+
+
+```php
+$builder
+    ->add("roles", "static_role", [
+        "label" => "User roles",
+        "multiple" => true,
+        "expanded" => true,
+        "roles_with_tags" => ["tag1", "tag2"], // only include roles with either "tag1" or "tag2"
+    ]);
+```
+
+```yml
+becklyn_static_roles:
+    roles:
+        ROLE_USER_1:
+            title: "User 1"
+            tags: [tag1, tag3] # will be included, as it has at least one of the defined roles
+        ROLE_USER_2:
+            title: "User 2"
+            tags: [tag3, tag4] # will not be included, as it has none of the defined roles
+```
+
+If you don't define any tags in your form, all roles will be included.
+
+```php
+$builder
+    ->add("roles", "static_role", [
+        "label" => "User roles",
+        "multiple" => true,
+        "expanded" => true,
+        "roles_with_tags" => [], // includes all roles
+    ]);
+
+// This is also the default value, so you can omit it:
+$builder
+  ->add("roles", "static_role", [
+      "label" => "User roles",
+      "multiple" => true,
+      "expanded" => true,
+  ]);
+```
 
 
 Note

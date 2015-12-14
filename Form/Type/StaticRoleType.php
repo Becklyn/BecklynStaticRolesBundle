@@ -5,6 +5,7 @@ namespace Becklyn\StaticRolesBundle\Form\Type;
 use Becklyn\StaticRolesBundle\Role\Role;
 use Becklyn\StaticRolesBundle\Role\RoleCollection;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
@@ -41,7 +42,28 @@ class StaticRoleType extends AbstractType
         $allRoleKeys = array_keys($allRoles);
 
         $resolver->setDefaults([
-            "choices" => array_combine($allRoleKeys, $allRoleKeys),
+            "roles_with_tags" => [],
+            "choices" => function(Options $options) use ($allRoleKeys, $allRoles)
+            {
+                // if no tags are selected, just return all roles
+                if (empty($options["roles_with_tags"]))
+                {
+                    return array_combine($allRoleKeys, $allRoleKeys);
+                }
+
+                // if tags are selected, only use the choices with the given tags
+                $choices = [];
+
+                foreach ($allRoles as $roleKey => $role)
+                {
+                    if (!empty(array_intersect($options["roles_with_tags"], $role->getTags())))
+                    {
+                        $choices[$roleKey] = $roleKey;
+                    }
+                }
+
+                return $choices;
+            },
             "choices_as_values" => true,
             "choice_label" => function ($choiceValue, $choiceKey, $index) use ($allRoles)
             {
@@ -54,13 +76,8 @@ class StaticRoleType extends AbstractType
                 ];
             },
         ]);
-    }
 
-
-
-    private function getChoicesMapping ()
-    {
-
+        $resolver->setAllowedTypes("roles_with_tags", ["array"]);
     }
 
 

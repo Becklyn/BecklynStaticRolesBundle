@@ -42,6 +42,14 @@ class Role extends BaseRole
     private $includedRoles = [];
 
 
+    /**
+     * A list of tags
+     *
+     * @var array
+     */
+    private $tags = [];
+
+
 
     /**
      * Role constructor.
@@ -50,13 +58,16 @@ class Role extends BaseRole
      * @param null|string $title
      * @param null|string $description
      * @param boolean     $hidden
+     * @param array       $tags
      */
-    public function __construct ($role, $title, $description, $hidden)
+    public function __construct ($role, $title, $description, $hidden, array $tags)
     {
         parent::__construct($role);
-        $this->title       = $title;
+
+        $this->title = $title;
         $this->description = $description;
-        $this->hidden      = $hidden;
+        $this->hidden = $hidden;
+        $this->tags = $tags;
     }
 
 
@@ -75,7 +86,8 @@ class Role extends BaseRole
             $role,
             isset($configuration["title"]) ? $configuration["title"] : null,
             isset($configuration["description"]) ? $configuration["description"] : null,
-            isset($configuration["hidden"]) ? $configuration["hidden"] : false
+            isset($configuration["hidden"]) ? $configuration["hidden"] : false,
+            isset($configuration["tags"]) ? $configuration["tags"] : []
         );
     }
 
@@ -97,6 +109,16 @@ class Role extends BaseRole
     public function getDescription ()
     {
         return $this->description;
+    }
+
+
+
+    /**
+     * @return array
+     */
+    public function getTags ()
+    {
+        return $this->tags;
     }
 
 
