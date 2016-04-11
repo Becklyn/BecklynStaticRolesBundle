@@ -7,6 +7,7 @@ use Becklyn\StaticRolesBundle\Role\RoleCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 /**
@@ -87,7 +88,7 @@ class StaticRoleType extends AbstractType
      */
     public function getParent ()
     {
-        return "choice";
+        return ChoiceType::class;
     }
 
 
@@ -95,7 +96,7 @@ class StaticRoleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName ()
+    public function getBlockPrefix ()
     {
         return "static_role";
     }
