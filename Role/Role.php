@@ -50,6 +50,14 @@ class Role extends BaseRole
     private $tags = [];
 
 
+    /**
+     * A list of actions this role has permission to do
+     *
+     * @var array
+     */
+    private $actions = [];
+
+
 
     /**
      * Role constructor.
@@ -59,8 +67,9 @@ class Role extends BaseRole
      * @param null|string $description
      * @param boolean     $hidden
      * @param array       $tags
+     * @param array       $actions
      */
-    public function __construct ($role, $title, $description, $hidden, array $tags)
+    public function __construct ($role, $title, $description, $hidden, array $tags, array $actions)
     {
         parent::__construct($role);
 
@@ -68,6 +77,7 @@ class Role extends BaseRole
         $this->description = $description;
         $this->hidden = $hidden;
         $this->tags = $tags;
+        $this->actions = $actions;
     }
 
 
@@ -87,7 +97,8 @@ class Role extends BaseRole
             isset($configuration["title"]) ? $configuration["title"] : null,
             isset($configuration["description"]) ? $configuration["description"] : null,
             isset($configuration["hidden"]) ? $configuration["hidden"] : false,
-            isset($configuration["tags"]) ? $configuration["tags"] : []
+            isset($configuration["tags"]) ? $configuration["tags"] : [],
+            isset($configuration["actions"]) ? $configuration["actions"] : []
         );
     }
 
@@ -139,6 +150,16 @@ class Role extends BaseRole
     public function setIncludedRoles (array $includedRoles)
     {
         $this->includedRoles = $includedRoles;
+    }
+
+
+
+    /**
+     * @return array
+     */
+    public function getActions ()
+    {
+        return $this->actions;
     }
 
 
