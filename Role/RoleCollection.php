@@ -3,6 +3,7 @@
 namespace Becklyn\StaticRolesBundle\Role;
 
 use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Security\Core\Role\Role as BaseRole;
 
 
 /**
@@ -57,6 +58,32 @@ class RoleCollection
             $preparedRoles[$roleKey]->setIncludedRoles($includedRoles);
         }
 
+        // Transform the Actions to Roles
+        foreach ($roleConfiguration as $roleKey => $configuration)
+        {
+            if (!isset($configuration["actions"]) || !is_array($configuration["actions"]))
+            {
+                continue;
+            }
+
+            foreach ($configuration["actions"] as $action)
+            {
+                if (!isset($preparedRoles[$action]))
+                {
+                    $preparedRoles[$action] = new BaseRole($action);
+                }
+            }
+            $includedActions = array_map(
+                function ($role) use ($preparedRoles)
+                {
+                    return $preparedRoles[$role];
+                },
+                $configuration["actions"]
+            );
+
+            $preparedRoles[$roleKey]->setIncludedActions($includedActions);
+        }
+
         return $preparedRoles;
     }
 
@@ -72,13 +99,15 @@ class RoleCollection
     public function getAllIncludedRoles (array $roles)
     {
         $allIncludedRoles = [];
-
         foreach ($this->normalizeRoleList($roles) as $role)
         {
             $includedRoleCollection = [];
             $this->findIncludedRoles($role, $includedRoleCollection);
-
             $allIncludedRoles = array_replace($allIncludedRoles, $includedRoleCollection);
+
+            $includedActionCollection = [];
+            $this->findIncludedActions($role, $includedActionCollection);
+            $allIncludedRoles = array_replace($allIncludedRoles, $includedActionCollection);
         }
 
         return $allIncludedRoles;
@@ -107,6 +136,28 @@ class RoleCollection
         foreach ($role->getIncludedRoles() as $includedRole)
         {
             $this->findIncludedRoles($includedRole, $includedRoleCollection);
+        }
+    }
+
+
+
+    /**
+     * Finds all included roles
+     *
+     * @param Role  $role
+     * @param array $includedActionCollection
+     */
+    private function findIncludedActions (Role $role, array &$includedActionCollection)
+    {
+        foreach ($role->getActions() as $action)
+        {
+            /** @var $action BaseRole */
+            if (isset($includedRoleCollection[$action->getRole()]))
+            {
+                return;
+            }
+
+            $includedActionCollection[$action->getRole()] = $action;
         }
     }
 
@@ -149,9 +200,15 @@ class RoleCollection
     {
         return array_filter(
             $this->roleCollection,
-            function (Role $role)
+            function (BaseRole $role)
             {
-                return !$role->isHidden();
+                if ($role instanceof Role)
+                {
+                    return !$role->isHidden();
+                }
+
+                //remove all BaseRoles
+                return false;
             }
         );
     }
