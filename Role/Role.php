@@ -165,6 +165,16 @@ class Role extends BaseRole
 
 
     /**
+     * @param BaseRole[] $includedActions
+     */
+    public function setIncludedActions (array $includedActions)
+    {
+        $this->actions = $includedActions;
+    }
+
+
+
+    /**
      * @return boolean
      */
     public function isHidden ()

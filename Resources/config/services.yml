@@ -11,6 +11,14 @@ services:
         tags:
             - { name: security.voter }
 
+    becklyn.static_roles.ability_voter:
+        class: Becklyn\StaticRolesBundle\Voter\RoleHierarchyVoter
+        arguments:
+            - "@becklyn.static_roles.role_collection"
+            - "CAN_"
+        tags:
+            - { name: security.voter }
+
 
     becklyn.static_roles.form.type.static_role:
         class: Becklyn\StaticRolesBundle\Form\Type\StaticRoleType
