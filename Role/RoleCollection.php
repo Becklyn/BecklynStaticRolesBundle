@@ -40,6 +40,33 @@ class RoleCollection
             $preparedRoles[$roleKey] = Role::createFromConfiguration($roleKey, $configuration);
         }
 
+        // Transform the Actions to Roles
+        foreach ($roleConfiguration as $roleKey => $configuration)
+        {
+            if (!isset($configuration["actions"]) || !is_array($configuration["actions"]))
+            {
+                continue;
+            }
+
+            foreach ($configuration["actions"] as $action)
+            {
+                if (!isset($preparedRoles[$action]))
+                {
+                    $preparedRoles[$action] = new BaseRole($action);
+                }
+            }
+
+            $includedActions = array_map(
+                function ($role) use ($preparedRoles)
+                {
+                    return $preparedRoles[$role];
+                },
+                $configuration["actions"]
+            );
+
+            $preparedRoles[$roleKey]->setIncludedActions($includedActions);
+        }
+
         foreach ($roleConfiguration as $roleKey => $configuration)
         {
             if (!isset($configuration["included_roles"]) || !is_array($configuration["included_roles"]))
@@ -56,32 +83,6 @@ class RoleCollection
             );
 
             $preparedRoles[$roleKey]->setIncludedRoles($includedRoles);
-        }
-
-        // Transform the Actions to Roles
-        foreach ($roleConfiguration as $roleKey => $configuration)
-        {
-            if (!isset($configuration["actions"]) || !is_array($configuration["actions"]))
-            {
-                continue;
-            }
-
-            foreach ($configuration["actions"] as $action)
-            {
-                if (!isset($preparedRoles[$action]))
-                {
-                    $preparedRoles[$action] = new BaseRole($action);
-                }
-            }
-            $includedActions = array_map(
-                function ($role) use ($preparedRoles)
-                {
-                    return $preparedRoles[$role];
-                },
-                $configuration["actions"]
-            );
-
-            $preparedRoles[$roleKey]->setIncludedActions($includedActions);
         }
 
         return $preparedRoles;
@@ -132,6 +133,11 @@ class RoleCollection
 
         // mark current role as included
         $includedRoleCollection[$role->getRole()] = $role;
+
+        foreach ($role->getActions() as $includedAction)
+        {
+            $includedRoleCollection[$includedAction->getRole()] = $includedAction;
+        }
 
         foreach ($role->getIncludedRoles() as $includedRole)
         {
