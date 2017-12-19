@@ -1,23 +1,26 @@
 {
-  "name":         "becklyn/static-roles-bundle",
-  "description":  "This bundle provides a simple way to define all available roles and their hierarchy in your configuration",
-  "keywords":     ["security", "symfony"],
-  "license":      "BSD-3-Clause",
-  "type":         "symfony-bundle",
-  "homepage":     "https://github.com/Becklyn/BecklynStaticRolesBundle",
-  "authors":      [
-    {
-      "name":     "Becklyn",
-      "homepage": "http://becklyn.com/"
+    "name": "becklyn/static-roles-bundle",
+    "description": "This bundle provides a simple way to define all available roles and their hierarchy in your configuration",
+    "keywords": ["security", "symfony"],
+    "license": "BSD-3-Clause",
+    "type": "symfony-bundle",
+    "homepage": "https://github.com/Becklyn/BecklynStaticRolesBundle",
+    "authors": [
+        {
+            "name": "Becklyn",
+            "homepage": "http://becklyn.com/"
+        }
+    ],
+    "require": {
+        "php": "^5.5|^7.0",
+        "symfony/config": "^2.8|^3.0",
+        "symfony/security-core": "^2.8|^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0",
+        "symfony/phpunit-bridge": "^3.4|^4.0"
+    },
+    "autoload": {
+        "psr-4": {"Becklyn\\StaticRolesBundle\\": ""}
     }
-  ],
-  "require": {
-    "php": ">=5.5",
-    "symfony/config": "^2.8|^3.0",
-    "symfony/security-core": "^2.8|^3.0",
-    "symfony/phpunit-bridge": "^3.4|^4.0"
-  },
-  "autoload":     {
-    "psr-4": { "Becklyn\\StaticRolesBundle\\": "" }
-  }
 }

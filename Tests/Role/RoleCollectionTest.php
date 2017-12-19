@@ -3,12 +3,13 @@
 namespace Becklyn\StaticRolesBundle\Tests\Role;
 
 use Becklyn\StaticRolesBundle\Role\RoleCollection;
+use PHPUnit\Framework\TestCase;
 
 
 /**
  *
  */
-class RoleCollectionTest extends \PHPUnit_Framework_TestCase
+class RoleCollectionTest extends TestCase
 {
     /**
      * Tests the correct detection of role hierarchies

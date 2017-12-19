@@ -3,12 +3,13 @@
 namespace Becklyn\StaticRolesBundle\Tests\Helper;
 
 use Becklyn\StaticRolesBundle\Helper\RoleNameHelper;
+use PHPUnit\Framework\TestCase;
 
 
 /**
  *
  */
-class RoleNameHelperTest extends \PHPUnit_Framework_TestCase
+class RoleNameHelperTest extends TestCase
 {
     public function getData ()
     {

@@ -3,12 +3,13 @@
 namespace Becklyn\StaticRolesBundle\Tests\Role;
 
 use Becklyn\StaticRolesBundle\Role\Role;
+use PHPUnit\Framework\TestCase;
 
 
 /**
  *
  */
-class RoleTest extends \PHPUnit_Framework_TestCase
+class RoleTest extends TestCase
 {
     /**
      *

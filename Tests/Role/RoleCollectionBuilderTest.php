@@ -3,12 +3,13 @@
 namespace Becklyn\StaticRolesBundle\Tests\Role;
 
 use Becklyn\StaticRolesBundle\Role\RoleCollectionBuilder;
+use PHPUnit\Framework\TestCase;
 
 
 /**
  *
  */
-class RoleCollectionBuilderTest extends \PHPUnit_Framework_TestCase
+class RoleCollectionBuilderTest extends TestCase
 {
     /**
      * Role names may not be empty
