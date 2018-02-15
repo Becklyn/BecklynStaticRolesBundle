@@ -2,7 +2,6 @@
 
 namespace Becklyn\StaticRolesBundle\Role;
 
-use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\Role\Role as BaseRole;
 
 
@@ -93,7 +92,7 @@ class RoleCollection
     /**
      * Finds all included roles of a set of base roles
      *
-     * @param (RoleInterface|string)[] $roles
+     * @param (BaseRole|string)[] $roles
      *
      * @return array
      */
@@ -172,7 +171,7 @@ class RoleCollection
     /**
      * Normalizes the role list
      *
-     * @param (RoleInterface|string)[] $roles
+     * @param (BaseRole|string)[] $roles
      *
      * @return Role[]
      */
@@ -182,7 +181,7 @@ class RoleCollection
 
         foreach ($roles as $role)
         {
-            $roleKey = (is_object($role) && ($role instanceof RoleInterface))
+            $roleKey = (is_object($role) && ($role instanceof BaseRole))
                 ? $role->getRole()
                 : (string) $role;
 
