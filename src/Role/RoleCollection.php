@@ -30,10 +30,7 @@ final class RoleCollection implements RoleHierarchyInterface
 
 
     /**
-     * @param array $coreHierarchy
      * @param StaticRole[] $roles
-     *
-     * @return RoleHierarchyInterface
      */
     private function buildFullHierarchy (array $coreHierarchy, array $roles) : RoleHierarchyInterface
     {
