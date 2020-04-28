@@ -2,6 +2,7 @@
 
 namespace Becklyn\StaticRolesBundle\Role;
 
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
@@ -10,7 +11,7 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 final class RoleCollection implements RoleHierarchyInterface
 {
     /** @var RoleHierarchyInterface */
-    private $coreHierarchy;
+    private $hierarchy;
 
     /** @var StaticRole[] */
     private $roles;
@@ -18,10 +19,42 @@ final class RoleCollection implements RoleHierarchyInterface
 
     /**
      */
-    public function __construct (RoleHierarchyInterface $coreHierarchy, array $config = [])
+    public function __construct (
+        array $config = [],
+        array $coreHierarchy = []
+    )
     {
-        $this->coreHierarchy = $coreHierarchy;
         $this->roles = $this->prepareRoleCollection($config);
+        $this->hierarchy = $this->buildFullHierarchy($coreHierarchy, $this->roles);
+    }
+
+
+    /**
+     * @param array $coreHierarchy
+     * @param StaticRole[] $roles
+     *
+     * @return RoleHierarchyInterface
+     */
+    private function buildFullHierarchy (array $coreHierarchy, array $roles) : RoleHierarchyInterface
+    {
+        foreach ($roles as $staticRole)
+        {
+            $role = $staticRole->getRole();
+
+            if (!\array_key_exists($role, $coreHierarchy))
+            {
+                $coreHierarchy[$role] = [];
+            }
+
+            foreach ($staticRole->getIncludedRoles() as $included)
+            {
+                $coreHierarchy[$role][] = $included;
+            }
+
+            $coreHierarchy[$role] = \array_unique($coreHierarchy[$role]);
+        }
+
+        return new RoleHierarchy($coreHierarchy);
     }
 
 
@@ -77,7 +110,7 @@ final class RoleCollection implements RoleHierarchyInterface
      */
     public function getReachableRoleNames (array $roles) : array
     {
-        $roles = $this->coreHierarchy->getReachableRoleNames($roles);
+        $roles = $this->hierarchy->getReachableRoleNames($roles);
 
         $result = $roles;
 
