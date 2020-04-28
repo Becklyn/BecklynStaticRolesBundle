@@ -11,7 +11,7 @@ use Becklyn\StaticRolesBundle\Helper\RoleNameHelper;
 /**
  * Helps building the role collection
  */
-class RoleCollectionBuilder
+final class RoleCollectionBuilder
 {
     /**
      * Prepares the role collection

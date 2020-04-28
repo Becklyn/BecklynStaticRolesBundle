@@ -7,6 +7,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  *
  */
-class BecklynStaticRolesBundle extends Bundle
+final class BecklynStaticRolesBundle extends Bundle
 {
 }

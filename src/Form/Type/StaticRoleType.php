@@ -2,7 +2,6 @@
 
 namespace Becklyn\StaticRolesBundle\Form\Type;
 
-use Becklyn\StaticRolesBundle\Role\StaticRole;
 use Becklyn\StaticRolesBundle\Role\RoleCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;

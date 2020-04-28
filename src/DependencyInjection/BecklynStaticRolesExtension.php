@@ -32,7 +32,7 @@ class BecklynStaticRolesExtension extends Extension
         $parsedConfiguration = $this->processConfiguration(new Configuration(), $config);
 
         // load services
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
         // build role collection
