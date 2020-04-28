@@ -10,4 +10,4 @@ services:
     Becklyn\StaticRolesBundle\Role\RoleCollection:
         decorates: 'security.role_hierarchy'
         arguments:
-            $coreHierarchy: '@Becklyn\StaticRolesBundle\Role\RoleCollection.inner'
+            $coreHierarchy: '%security.role_hierarchy.roles%'

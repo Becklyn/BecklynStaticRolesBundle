@@ -15,7 +15,7 @@ final class StaticRole
     /**
      * The title of the role
      *
-     * @var string|null
+     * @var string
      */
     private $title;
 
@@ -34,6 +34,14 @@ final class StaticRole
      * @var bool
      */
     private $hidden;
+
+
+    /**
+     * A list of all included role names
+     *
+     * @var string[]
+     */
+    private $includedRoles;
 
 
     /**
@@ -58,9 +66,10 @@ final class StaticRole
      */
     public function __construct (
         string $role,
-        ?string $title,
+        string $title,
         ?string $description,
         bool $hidden,
+        array $includedRoles,
         array $tags,
         array $actions
     )
@@ -69,6 +78,7 @@ final class StaticRole
         $this->title = $title;
         $this->description = $description;
         $this->hidden = $hidden;
+        $this->includedRoles = $includedRoles;
         $this->tags = $tags;
         $this->actions = $actions;
     }
@@ -77,18 +87,15 @@ final class StaticRole
 
     /**
      * Creates the role from the configuration
-     *
-     * @param string $role
-     *
-     * @return StaticRole
      */
-    public static function createFromConfiguration ($role, array $configuration)
+    public static function createFromConfiguration (string $role, array $configuration) : self
     {
         return new self(
             $role,
-            $configuration["title"] ?? null,
+            $configuration["title"] ?? $role,
             $configuration["description"] ?? null,
             $configuration["hidden"] ?? false,
+            $configuration["included_roles"] ?? [],
             $configuration["tags"] ?? [],
             $configuration["actions"] ?? []
         );
@@ -98,7 +105,7 @@ final class StaticRole
 
     /**
      */
-    public function getTitle () : ?string
+    public function getTitle () : string
     {
         return $this->title;
     }
@@ -119,6 +126,16 @@ final class StaticRole
     public function getTags () : array
     {
         return $this->tags;
+    }
+
+
+
+    /**
+     * @return string[]
+     */
+    public function getIncludedRoles () : array
+    {
+        return $this->includedRoles;
     }
 
 
