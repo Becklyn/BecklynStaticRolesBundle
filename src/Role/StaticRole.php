@@ -15,7 +15,7 @@ final class StaticRole
     /**
      * The title of the role
      *
-     * @var string|null
+     * @var string
      */
     private $title;
 
@@ -41,7 +41,7 @@ final class StaticRole
      *
      * @var string[]
      */
-    private $includedRoles = [];
+    private $includedRoles;
 
 
     /**
@@ -66,7 +66,7 @@ final class StaticRole
      */
     public function __construct (
         string $role,
-        ?string $title,
+        string $title,
         ?string $description,
         bool $hidden,
         array $includedRoles,
@@ -96,7 +96,7 @@ final class StaticRole
     {
         return new self(
             $role,
-            $configuration["title"] ?? null,
+            $configuration["title"],
             $configuration["description"] ?? null,
             $configuration["hidden"] ?? false,
             $configuration["included_roles"] ?? [],
@@ -109,7 +109,7 @@ final class StaticRole
 
     /**
      */
-    public function getTitle () : ?string
+    public function getTitle () : string
     {
         return $this->title;
     }
