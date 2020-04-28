@@ -87,16 +87,12 @@ final class StaticRole
 
     /**
      * Creates the role from the configuration
-     *
-     * @param string $role
-     *
-     * @return StaticRole
      */
-    public static function createFromConfiguration ($role, array $configuration)
+    public static function createFromConfiguration (string $role, array $configuration) : self
     {
         return new self(
             $role,
-            $configuration["title"],
+            $configuration["title"] ?? $role,
             $configuration["description"] ?? null,
             $configuration["hidden"] ?? false,
             $configuration["included_roles"] ?? [],

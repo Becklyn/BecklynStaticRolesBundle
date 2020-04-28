@@ -34,7 +34,7 @@ class StaticRoleTest extends TestCase
     {
         $role = StaticRole::createFromConfiguration("ROLE_TEST", []);
 
-        $this->assertNull($role->getTitle());
+        $this->assertSame("ROLE_TEST", $role->getTitle());
         $this->assertNull($role->getDescription());
         $this->assertFalse($role->isHidden());
     }
