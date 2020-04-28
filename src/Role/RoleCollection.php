@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Becklyn\StaticRolesBundle\Role;
 
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
@@ -12,6 +13,9 @@ final class RoleCollection implements RoleHierarchyInterface
     /** @var RoleHierarchyInterface */
     private $coreHierarchy;
 
+    /** @var RoleHierarchyInterface */
+    private $nestedHierarchy;
+
     /** @var StaticRole[] */
     private $roles;
 
@@ -21,15 +25,30 @@ final class RoleCollection implements RoleHierarchyInterface
     public function __construct (RoleHierarchyInterface $coreHierarchy, array $config = [])
     {
         $this->coreHierarchy = $coreHierarchy;
+        $this->nestedHierarchy = $this->buildNestedHierarchy($config);
         $this->roles = $this->prepareRoleCollection($config);
+    }
+
+
+    /**
+     *
+     */
+    private function buildNestedHierarchy (array $config) : RoleHierarchyInterface
+    {
+        $map = [];
+
+        foreach ($config as $role => $data)
+        {
+            $map[$role] = $data["included_roles"] ?? [];
+        }
+
+        return new RoleHierarchy($map);
     }
 
 
 
     /**
      * Prepares the role collection by transforming the config array to an object structure
-     *
-     * @param array[] $roleConfiguration
      *
      * @return StaticRole[]
      */
@@ -55,17 +74,11 @@ final class RoleCollection implements RoleHierarchyInterface
      */
     public function getAllAvailableRoles ()
     {
-        return array_filter(
+        return \array_filter(
             $this->roles,
             function (StaticRole $role)
             {
-                if ($role instanceof StaticRole)
-                {
-                    return !$role->isHidden();
-                }
-
-                // remove all BaseRoles
-                return false;
+                return !$role->isHidden();
             }
         );
     }
@@ -86,7 +99,13 @@ final class RoleCollection implements RoleHierarchyInterface
     public function getReachableRoleNames (array $roles) : array
     {
         $roles = $this->coreHierarchy->getReachableRoleNames($roles);
-        $result = $roles;
+
+        foreach ($this->nestedHierarchy->getReachableRoleNames($roles) as $additional)
+        {
+            $roles[] = $additional;
+        }
+
+        $result = \array_unique($roles);
 
         foreach ($roles as $role)
         {

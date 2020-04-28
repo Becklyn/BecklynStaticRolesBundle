@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Becklyn\StaticRolesBundle\Role;
 
@@ -15,7 +15,7 @@ final class StaticRole
     /**
      * The title of the role
      *
-     * @var null|string
+     * @var string|null
      */
     private $title;
 
@@ -23,7 +23,7 @@ final class StaticRole
     /**
      * The description of the role
      *
-     * @var null|string
+     * @var string|null
      */
     private $description;
 
@@ -31,15 +31,15 @@ final class StaticRole
     /**
      * Whether the role should be hidden when providing a list of available roles to the user
      *
-     * @var boolean
+     * @var bool
      */
     private $hidden;
 
 
     /**
-     * A list of all included roles
+     * A list of all included role names
      *
-     * @var StaticRole[]
+     * @var string[]
      */
     private $includedRoles = [];
 
@@ -63,19 +63,13 @@ final class StaticRole
 
     /**
      * Role constructor.
-     *
-     * @param string      $role
-     * @param null|string $title
-     * @param null|string $description
-     * @param boolean     $hidden
-     * @param array       $tags
-     * @param array       $actions
      */
     public function __construct (
         string $role,
         ?string $title,
         ?string $description,
         bool $hidden,
+        array $includedRoles,
         array $tags,
         array $actions
     )
@@ -84,6 +78,7 @@ final class StaticRole
         $this->title = $title;
         $this->description = $description;
         $this->hidden = $hidden;
+        $this->includedRoles = $includedRoles;
         $this->tags = $tags;
         $this->actions = $actions;
     }
@@ -94,17 +89,17 @@ final class StaticRole
      * Creates the role from the configuration
      *
      * @param string $role
-     * @param array  $configuration
      *
      * @return StaticRole
      */
     public static function createFromConfiguration ($role, array $configuration)
     {
-        return new StaticRole(
+        return new self(
             $role,
             $configuration["title"] ?? null,
             $configuration["description"] ?? null,
             $configuration["hidden"] ?? false,
+            $configuration["included_roles"] ?? [],
             $configuration["tags"] ?? [],
             $configuration["actions"] ?? []
         );
@@ -131,7 +126,6 @@ final class StaticRole
 
 
     /**
-     * @return array
      */
     public function getTags () : array
     {
@@ -141,7 +135,7 @@ final class StaticRole
 
 
     /**
-     * @return StaticRole[]
+     * @return string[]
      */
     public function getIncludedRoles () : array
     {
@@ -151,17 +145,6 @@ final class StaticRole
 
 
     /**
-     * @param StaticRole[] $includedRoles
-     */
-    public function setIncludedRoles (array $includedRoles)
-    {
-        $this->includedRoles = $includedRoles;
-    }
-
-
-
-    /**
-     * @return array
      */
     public function getActions () : array
     {
@@ -171,17 +154,7 @@ final class StaticRole
 
 
     /**
-     * @param string[] $includedActions
-     */
-    public function setIncludedActions (array $includedActions)
-    {
-        $this->actions = $includedActions;
-    }
-
-
-
-    /**
-     * @return boolean
+     * @return bool
      */
     public function isHidden ()
     {
@@ -190,7 +163,6 @@ final class StaticRole
 
 
     /**
-     * @return string
      */
     public function getRole () : string
     {
