@@ -1,6 +1,6 @@
 <?php
 
-namespace Becklyn\StaticRolesBundle\Tests\Helper;
+namespace Tests\Becklyn\StaticRolesBundle\Helper;
 
 use Becklyn\StaticRolesBundle\Helper\RoleNameHelper;
 use PHPUnit\Framework\TestCase;
@@ -39,10 +39,11 @@ class RoleNameHelperTest extends TestCase
 
 
     /**
-     * @expectedException \InvalidArgumentException
      */
     public function testEmptyRole ()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $helper = new RoleNameHelper();
         $helper->normalizeRoleName("");
     }
@@ -50,10 +51,11 @@ class RoleNameHelperTest extends TestCase
 
 
     /**
-     * @expectedException \InvalidArgumentException
      */
     public function testRoleWithOnlyWhitespace ()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $helper = new RoleNameHelper();
         $helper->normalizeRoleName("   ");
     }

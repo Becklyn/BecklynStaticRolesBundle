@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Becklyn\StaticRolesBundle\Twig;
 
@@ -19,7 +19,6 @@ class StaticRolesTwigExtension extends AbstractExtension
 
 
     /**
-     * @param RoleCollection $roleCollection
      */
     public function __construct (RoleCollection $roleCollection)
     {
@@ -33,7 +32,7 @@ class StaticRolesTwigExtension extends AbstractExtension
      *
      * @param string $roleKey
      *
-     * @return null|string
+     * @return string|null
      */
     public function staticRoleTitle ($roleKey)
     {

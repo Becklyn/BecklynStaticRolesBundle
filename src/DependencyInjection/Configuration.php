@@ -1,10 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Becklyn\StaticRolesBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-
 
 /**
  *

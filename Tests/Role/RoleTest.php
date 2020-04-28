@@ -1,6 +1,6 @@
 <?php
 
-namespace Becklyn\StaticRolesBundle\Tests\Role;
+namespace Tests\Becklyn\StaticRolesBundle\Role;
 
 use Becklyn\StaticRolesBundle\Role\StaticRole;
 use PHPUnit\Framework\TestCase;

@@ -1,12 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Becklyn\StaticRolesBundle\Role;
 
 use Becklyn\StaticRolesBundle\Exception\DuplicateRoleDefinitionException;
 use Becklyn\StaticRolesBundle\Exception\EmptyRoleNameException;
-use Becklyn\StaticRolesBundle\Exception\UnknownRoleException;
 use Becklyn\StaticRolesBundle\Helper\RoleNameHelper;
-
 
 /**
  * Helps building the role collection
@@ -29,7 +27,7 @@ final class RoleCollectionBuilder
                 $roleName = $roleHelper->normalizeRoleName($role);
 
                 // check for duplicate role definitions
-                if (array_key_exists($roleName, $roleCollection))
+                if (\array_key_exists($roleName, $roleCollection))
                 {
                     $addition = ($roleName !== $role) ? " (normalized from “{$role}”)" : "";
                     throw new DuplicateRoleDefinitionException("The role “{$roleName}”{$addition} has multiple definitions. Keep in mind that all role names are normalized to a common “ROLE_…” format.");

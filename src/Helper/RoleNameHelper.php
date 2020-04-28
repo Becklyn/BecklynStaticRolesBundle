@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Becklyn\StaticRolesBundle\Helper;
 
@@ -16,16 +16,16 @@ class RoleNameHelper
      */
     public function normalizeRoleName ($role)
     {
-        $role = trim((string) $role);
+        $role = \trim((string) $role);
 
         if ("" === $role)
         {
             throw new \InvalidArgumentException("Role name can't be empty or only contain whitespace.");
         }
 
-        $role = strtoupper($role);
+        $role = \strtoupper($role);
 
-        return (0 !== strpos($role, "ROLE_"))
+        return (0 !== \strpos($role, "ROLE_"))
             ? "ROLE_{$role}"
             : $role;
     }

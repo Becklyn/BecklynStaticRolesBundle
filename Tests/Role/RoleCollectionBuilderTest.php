@@ -1,7 +1,9 @@
 <?php
 
-namespace Becklyn\StaticRolesBundle\Tests\Role;
+namespace Tests\Becklyn\StaticRolesBundle\Role;
 
+use Becklyn\StaticRolesBundle\Exception\DuplicateRoleDefinitionException;
+use Becklyn\StaticRolesBundle\Exception\EmptyRoleNameException;
 use Becklyn\StaticRolesBundle\Role\RoleCollectionBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -13,31 +15,13 @@ class RoleCollectionBuilderTest extends TestCase
 {
     /**
      * Role names may not be empty
-     *
-     * @expectedException \Becklyn\StaticRolesBundle\Exception\EmptyRoleNameException
      */
     public function testEmptyRoleName ()
     {
+        $this->expectException(EmptyRoleNameException::class);
+
         $roles = [
             "" => []
-        ];
-
-        $builder = new RoleCollectionBuilder();
-        $builder->prepareRoleCollection($roles);
-    }
-
-
-    /**
-     * Included role names may not be empty
-     *
-     * @expectedException \Becklyn\StaticRolesBundle\Exception\EmptyRoleNameException
-     */
-    public function testEmptyIncludedRoleName ()
-    {
-        $roles = [
-            "a" => [
-                "included_roles" => [""]
-            ]
         ];
 
         $builder = new RoleCollectionBuilder();
@@ -62,31 +46,13 @@ class RoleCollectionBuilderTest extends TestCase
      *
      * @param $firstDefinition
      * @param $secondDefinition
-     *
-     * @expectedException \Becklyn\StaticRolesBundle\Exception\DuplicateRoleDefinitionException
      */
     public function testDuplicateDefinitions ($firstDefinition, $secondDefinition)
     {
+        $this->expectException(DuplicateRoleDefinitionException::class);
         $roles = [
             $firstDefinition => [],
             $secondDefinition => []
-        ];
-
-        $builder = new RoleCollectionBuilder();
-        $builder->prepareRoleCollection($roles);
-    }
-
-
-
-    /**
-     * @expectedException \Becklyn\StaticRolesBundle\Exception\UnknownRoleException
-     */
-    public function testUnknownIncludedRole ()
-    {
-        $roles = [
-            "a" => [
-                "included_roles" => ["b"]
-            ]
         ];
 
         $builder = new RoleCollectionBuilder();
@@ -111,7 +77,7 @@ class RoleCollectionBuilderTest extends TestCase
 
         $this->assertEquals([
             "ROLE_A" => [
-                "included_roles" => ["ROLE_B"],
+                "included_roles" => ["b"],
             ],
             "ROLE_B" => [
                 "title" => "b",

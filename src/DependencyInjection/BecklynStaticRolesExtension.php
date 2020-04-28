@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Becklyn\StaticRolesBundle\DependencyInjection;
 
@@ -8,7 +8,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-
 
 /**
  *
@@ -25,7 +24,7 @@ class BecklynStaticRolesExtension extends Extension
      *
      * @api
      */
-    public function load (array $config, ContainerBuilder $container)
+    public function load (array $config, ContainerBuilder $container) : void
     {
         // parse configuration
         $parsedConfiguration = $this->processConfiguration(new Configuration(), $config);
