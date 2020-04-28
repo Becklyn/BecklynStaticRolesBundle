@@ -27,6 +27,15 @@
     "require-dev": {
         "symfony/phpunit-bridge": "^5.0"
     },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev",
+            "dev-next": "1.x-dev"
+        }
+    },
     "autoload": {
         "psr-4": {
             "Becklyn\\StaticRolesBundle\\": "src"
