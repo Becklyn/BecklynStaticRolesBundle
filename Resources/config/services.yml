@@ -1,23 +1,15 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Becklyn\StaticRolesBundle\Role\AbilitiesRoleHierarchy:
+        decorates: 'security.role_hierarchy'
+        arguments:
+            $coreHierarchy: '@Becklyn\StaticRolesBundle\Role\AbilitiesRoleHierarchy.inner'
+
     becklyn.static_roles.role_collection:
         class: Becklyn\StaticRolesBundle\Role\RoleCollection
-        arguments:
-            - ~ # set in the extension class
-
-    becklyn.static_roles.role_hierarchy_voter:
-        class: Becklyn\StaticRolesBundle\Voter\RoleHierarchyVoter
-        arguments:
-            - "@becklyn.static_roles.role_collection"
-        tags:
-            - { name: security.voter }
-
-    becklyn.static_roles.ability_voter:
-        class: Becklyn\StaticRolesBundle\Voter\RoleHierarchyVoter
-        arguments:
-            - "@becklyn.static_roles.role_collection"
-            - "CAN_"
-        tags:
-            - { name: security.voter }
 
 
     becklyn.static_roles.form.type.static_role:

@@ -2,20 +2,22 @@
 
 namespace Becklyn\StaticRolesBundle\Role;
 
-use Symfony\Component\Security\Core\Role\Role as BaseRole;
-
-
 /**
  *
  */
-class Role extends BaseRole
+final class StaticRole
 {
+    /**
+     * @var string
+     */
+    private $role;
+
     /**
      * The title of the role
      *
      * @var null|string
      */
-    private $title = null;
+    private $title;
 
 
     /**
@@ -23,7 +25,7 @@ class Role extends BaseRole
      *
      * @var null|string
      */
-    private $description = null;
+    private $description;
 
 
     /**
@@ -37,7 +39,7 @@ class Role extends BaseRole
     /**
      * A list of all included roles
      *
-     * @var Role[]
+     * @var StaticRole[]
      */
     private $includedRoles = [];
 
@@ -47,7 +49,7 @@ class Role extends BaseRole
      *
      * @var array
      */
-    private $tags = [];
+    private $tags;
 
 
     /**
@@ -55,7 +57,7 @@ class Role extends BaseRole
      *
      * @var array
      */
-    private $actions = [];
+    private $actions;
 
 
 
@@ -69,10 +71,16 @@ class Role extends BaseRole
      * @param array       $tags
      * @param array       $actions
      */
-    public function __construct ($role, $title, $description, $hidden, array $tags, array $actions)
+    public function __construct (
+        string $role,
+        ?string $title,
+        ?string $description,
+        bool $hidden,
+        array $tags,
+        array $actions
+    )
     {
-        parent::__construct($role);
-
+        $this->role = $role;
         $this->title = $title;
         $this->description = $description;
         $this->hidden = $hidden;
@@ -88,26 +96,25 @@ class Role extends BaseRole
      * @param string $role
      * @param array  $configuration
      *
-     * @return Role
+     * @return StaticRole
      */
     public static function createFromConfiguration ($role, array $configuration)
     {
-        return new Role(
+        return new StaticRole(
             $role,
-            isset($configuration["title"]) ? $configuration["title"] : null,
-            isset($configuration["description"]) ? $configuration["description"] : null,
-            isset($configuration["hidden"]) ? $configuration["hidden"] : false,
-            isset($configuration["tags"]) ? $configuration["tags"] : [],
-            isset($configuration["actions"]) ? $configuration["actions"] : []
+            $configuration["title"] ?? null,
+            $configuration["description"] ?? null,
+            $configuration["hidden"] ?? false,
+            $configuration["tags"] ?? [],
+            $configuration["actions"] ?? []
         );
     }
 
 
 
     /**
-     * @return null|string
      */
-    public function getTitle ()
+    public function getTitle () : ?string
     {
         return $this->title;
     }
@@ -115,9 +122,8 @@ class Role extends BaseRole
 
 
     /**
-     * @return null|string
      */
-    public function getDescription ()
+    public function getDescription () : ?string
     {
         return $this->description;
     }
@@ -127,7 +133,7 @@ class Role extends BaseRole
     /**
      * @return array
      */
-    public function getTags ()
+    public function getTags () : array
     {
         return $this->tags;
     }
@@ -135,9 +141,9 @@ class Role extends BaseRole
 
 
     /**
-     * @return Role[]
+     * @return StaticRole[]
      */
-    public function getIncludedRoles ()
+    public function getIncludedRoles () : array
     {
         return $this->includedRoles;
     }
@@ -145,7 +151,7 @@ class Role extends BaseRole
 
 
     /**
-     * @param Role[] $includedRoles
+     * @param StaticRole[] $includedRoles
      */
     public function setIncludedRoles (array $includedRoles)
     {
@@ -157,7 +163,7 @@ class Role extends BaseRole
     /**
      * @return array
      */
-    public function getActions ()
+    public function getActions () : array
     {
         return $this->actions;
     }
@@ -165,7 +171,7 @@ class Role extends BaseRole
 
 
     /**
-     * @param BaseRole[] $includedActions
+     * @param string[] $includedActions
      */
     public function setIncludedActions (array $includedActions)
     {
@@ -180,5 +186,14 @@ class Role extends BaseRole
     public function isHidden ()
     {
         return $this->hidden;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getRole () : string
+    {
+        return $this->role;
     }
 }

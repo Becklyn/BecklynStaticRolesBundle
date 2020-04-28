@@ -18,10 +18,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder ()
     {
-        $treeBuilder = new TreeBuilder();
-        $root = $treeBuilder->root("becklyn_static_roles");
+        $treeBuilder = new TreeBuilder("becklyn_static_roles");
 
-        $root
+        $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode("roles")
                     ->useAttributeAsKey("role")

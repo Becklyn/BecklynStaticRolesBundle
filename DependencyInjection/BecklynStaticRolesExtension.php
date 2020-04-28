@@ -2,6 +2,7 @@
 
 namespace Becklyn\StaticRolesBundle\DependencyInjection;
 
+use Becklyn\StaticRolesBundle\Role\AbilitiesRoleHierarchy;
 use Becklyn\StaticRolesBundle\Role\RoleCollection;
 use Becklyn\StaticRolesBundle\Role\RoleCollectionBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -37,7 +38,7 @@ class BecklynStaticRolesExtension extends Extension
         // build role collection
         $builder = new RoleCollectionBuilder();
 
-        $roleCollectionDefinition = $container->getDefinition("becklyn.static_roles.role_collection");
-        $roleCollectionDefinition->replaceArgument(0, $builder->prepareRoleCollection($parsedConfiguration["roles"]));
+        $roleCollectionDefinition = $container->getDefinition(AbilitiesRoleHierarchy::class);
+        $roleCollectionDefinition->setArgument('$config', $builder->prepareRoleCollection($parsedConfiguration["roles"]));
     }
 }

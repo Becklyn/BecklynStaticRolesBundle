@@ -3,12 +3,13 @@
 namespace Becklyn\StaticRolesBundle\Twig;
 
 use Becklyn\StaticRolesBundle\Role\RoleCollection;
-
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig helper functions for handling of static roles
  */
-class StaticRolesTwigExtension extends \Twig_Extension
+class StaticRolesTwigExtension extends AbstractExtension
 {
     /**
      * @var RoleCollection
@@ -51,17 +52,7 @@ class StaticRolesTwigExtension extends \Twig_Extension
     public function getFunctions ()
     {
         return [
-            new \Twig_SimpleFunction("staticRoleTitle", [$this, "staticRoleTitle"]),
+            new TwigFunction("staticRoleTitle", [$this, "staticRoleTitle"]),
         ];
-    }
-
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getName ()
-    {
-        return self::class;
     }
 }

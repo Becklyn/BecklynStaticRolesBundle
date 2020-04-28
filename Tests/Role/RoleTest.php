@@ -2,7 +2,7 @@
 
 namespace Becklyn\StaticRolesBundle\Tests\Role;
 
-use Becklyn\StaticRolesBundle\Role\Role;
+use Becklyn\StaticRolesBundle\Role\StaticRole;
 use PHPUnit\Framework\TestCase;
 
 
@@ -16,7 +16,7 @@ class RoleTest extends TestCase
      */
     public function testConfigurationFromArray ()
     {
-        $role = Role::createFromConfiguration("ROLE_TEST", [
+        $role = StaticRole::createFromConfiguration("ROLE_TEST", [
             "title" => "title",
             "description" => "description",
             "hidden" => true,
@@ -32,7 +32,7 @@ class RoleTest extends TestCase
 
     public function testEmptyConfigurationFromArray ()
     {
-        $role = Role::createFromConfiguration("ROLE_TEST", []);
+        $role = StaticRole::createFromConfiguration("ROLE_TEST", []);
 
         $this->assertNull($role->getTitle());
         $this->assertNull($role->getDescription());

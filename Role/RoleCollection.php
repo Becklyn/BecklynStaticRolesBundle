@@ -2,22 +2,26 @@
 
 namespace Becklyn\StaticRolesBundle\Role;
 
-use Symfony\Component\Security\Core\Role\Role as BaseRole;
-
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
  *
  */
-class RoleCollection
+final class RoleCollection implements RoleHierarchyInterface
 {
-    /**
-     * @var Role[]
-     */
-    private $roleCollection;
+    /** @var RoleHierarchyInterface */
+    private $coreHierarchy;
 
-    public function __construct (array $roleCollection)
+    /** @var StaticRole[] */
+    private $roles;
+
+
+    /**
+     */
+    public function __construct (RoleHierarchyInterface $coreHierarchy, array $config = [])
     {
-        $this->roleCollection = $this->prepareRoleCollection($roleCollection);
+        $this->coreHierarchy = $coreHierarchy;
+        $this->roles = $this->prepareRoleCollection($config);
     }
 
 
@@ -27,61 +31,16 @@ class RoleCollection
      *
      * @param array[] $roleConfiguration
      *
-     * @return Role[]
+     * @return StaticRole[]
      */
-    private function prepareRoleCollection (array $roleConfiguration)
+    private function prepareRoleCollection (array $config = [])
     {
-        /** @var Role[] $preparedRoles */
+        /** @var StaticRole[] $preparedRoles */
         $preparedRoles = [];
 
-        foreach ($roleConfiguration as $roleKey => $configuration)
+        foreach ($config as $roleKey => $configuration)
         {
-            $preparedRoles[$roleKey] = Role::createFromConfiguration($roleKey, $configuration);
-        }
-
-        // Transform the Actions to Roles
-        foreach ($roleConfiguration as $roleKey => $configuration)
-        {
-            if (!isset($configuration["actions"]) || !is_array($configuration["actions"]))
-            {
-                continue;
-            }
-
-            foreach ($configuration["actions"] as $action)
-            {
-                if (!isset($preparedRoles[$action]))
-                {
-                    $preparedRoles[$action] = new BaseRole($action);
-                }
-            }
-
-            $includedActions = array_map(
-                function ($role) use ($preparedRoles)
-                {
-                    return $preparedRoles[$role];
-                },
-                $configuration["actions"]
-            );
-
-            $preparedRoles[$roleKey]->setIncludedActions($includedActions);
-        }
-
-        foreach ($roleConfiguration as $roleKey => $configuration)
-        {
-            if (!isset($configuration["included_roles"]) || !is_array($configuration["included_roles"]))
-            {
-                continue;
-            }
-
-            $includedRoles = array_map(
-                function ($role) use ($preparedRoles)
-                {
-                    return $preparedRoles[$role];
-                },
-                $configuration["included_roles"]
-            );
-
-            $preparedRoles[$roleKey]->setIncludedRoles($includedRoles);
+            $preparedRoles[$roleKey] = StaticRole::createFromConfiguration($roleKey, $configuration);
         }
 
         return $preparedRoles;
@@ -90,129 +49,22 @@ class RoleCollection
 
 
     /**
-     * Finds all included roles of a set of base roles
-     *
-     * @param (BaseRole|string)[] $roles
-     *
-     * @return array
-     */
-    public function getAllIncludedRoles (array $roles)
-    {
-        $allIncludedRoles = [];
-        foreach ($this->normalizeRoleList($roles) as $role)
-        {
-            $includedRoleCollection = [];
-            $this->findIncludedRoles($role, $includedRoleCollection);
-            $allIncludedRoles = array_replace($allIncludedRoles, $includedRoleCollection);
-
-            $includedActionCollection = [];
-            $this->findIncludedActions($role, $includedActionCollection);
-            $allIncludedRoles = array_replace($allIncludedRoles, $includedActionCollection);
-        }
-
-        return $allIncludedRoles;
-    }
-
-
-
-    /**
-     * Finds all included roles
-     *
-     * @param Role  $role                   the starting role
-     * @param array $includedRoleCollection the list of included roles
-     */
-    private function findIncludedRoles (Role $role, array &$includedRoleCollection)
-    {
-        // check whether we already visited this role
-        // this is required as we need a safeguard against cyclic role hierarchies
-        if (isset($includedRoleCollection[$role->getRole()]))
-        {
-            return;
-        }
-
-        // mark current role as included
-        $includedRoleCollection[$role->getRole()] = $role;
-
-        foreach ($role->getActions() as $includedAction)
-        {
-            $includedRoleCollection[$includedAction->getRole()] = $includedAction;
-        }
-
-        foreach ($role->getIncludedRoles() as $includedRole)
-        {
-            $this->findIncludedRoles($includedRole, $includedRoleCollection);
-        }
-    }
-
-
-
-    /**
-     * Finds all included roles
-     *
-     * @param Role  $role
-     * @param array $includedActionCollection
-     */
-    private function findIncludedActions (Role $role, array &$includedActionCollection)
-    {
-        foreach ($role->getActions() as $action)
-        {
-            /** @var $action BaseRole */
-            if (isset($includedRoleCollection[$action->getRole()]))
-            {
-                return;
-            }
-
-            $includedActionCollection[$action->getRole()] = $action;
-        }
-    }
-
-
-
-    /**
-     * Normalizes the role list
-     *
-     * @param (BaseRole|string)[] $roles
-     *
-     * @return Role[]
-     */
-    private function normalizeRoleList (array $roles)
-    {
-        $normalized = [];
-
-        foreach ($roles as $role)
-        {
-            $roleKey = (is_object($role) && ($role instanceof BaseRole))
-                ? $role->getRole()
-                : (string) $role;
-
-            if (isset($this->roleCollection[$roleKey]))
-            {
-                $normalized[] = $this->roleCollection[$roleKey];
-            }
-        }
-
-        return $normalized;
-    }
-
-
-
-    /**
      * Returns a list of all roles
      *
-     * @return Role[]
+     * @return StaticRole[]
      */
     public function getAllAvailableRoles ()
     {
         return array_filter(
-            $this->roleCollection,
-            function (BaseRole $role)
+            $this->roles,
+            function (StaticRole $role)
             {
-                if ($role instanceof Role)
+                if ($role instanceof StaticRole)
                 {
                     return !$role->isHidden();
                 }
 
-                //remove all BaseRoles
+                // remove all BaseRoles
                 return false;
             }
         );
@@ -221,15 +73,36 @@ class RoleCollection
 
     /**
      * Returns a Role by key
-     *
-     * @param string $roleKey
-     *
-     * @return Role|null
      */
-    public function getRoleByKey ($roleKey)
+    public function getRoleByKey (string $roleKey) : ?StaticRole
     {
-        return array_key_exists($roleKey, $this->roleCollection)
-            ? $this->roleCollection[$roleKey]
-            : null;
+        return $this->roles[$roleKey] ?? null;
     }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getReachableRoleNames (array $roles) : array
+    {
+        $roles = $this->coreHierarchy->getReachableRoleNames($roles);
+        $result = $roles;
+
+        foreach ($roles as $role)
+        {
+            $staticRole = $this->roles[$role] ?? null;
+
+            if (null !== $staticRole)
+            {
+                foreach ($staticRole->getActions() as $action)
+                {
+                    $result[] = $action;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+
 }
