@@ -15,8 +15,8 @@
 
     <testsuites>
         <testsuite name="Bundle tests">
-            <directory>Tests</directory>
-            <exclude>Tests/fixtures</exclude>
+            <directory>tests</directory>
+            <exclude>tests/fixtures</exclude>
         </testsuite>
     </testsuites>
 
