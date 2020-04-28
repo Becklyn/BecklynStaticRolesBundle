@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 /**
  *
  */
-class RoleTest extends TestCase
+class StaticRoleTest extends TestCase
 {
     /**
      *
