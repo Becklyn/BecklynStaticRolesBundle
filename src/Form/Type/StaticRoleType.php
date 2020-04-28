@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 /**
  *
  */
-class StaticRoleType extends AbstractType
+final class StaticRoleType extends AbstractType
 {
     /**
      * @var RoleCollection

@@ -5,6 +5,6 @@ namespace Becklyn\StaticRolesBundle\Exception;
 /**
  *
  */
-class EmptyRoleNameException extends RoleDefinitionException
+final class EmptyRoleNameException extends RoleDefinitionException
 {
 }

@@ -6,6 +6,6 @@ namespace Becklyn\StaticRolesBundle\Exception;
 /**
  *
  */
-class DuplicateRoleDefinitionException extends RoleDefinitionException
+final class DuplicateRoleDefinitionException extends RoleDefinitionException
 {
 }
