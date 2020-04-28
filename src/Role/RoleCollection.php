@@ -2,7 +2,6 @@
 
 namespace Becklyn\StaticRolesBundle\Role;
 
-use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
@@ -13,9 +12,6 @@ final class RoleCollection implements RoleHierarchyInterface
     /** @var RoleHierarchyInterface */
     private $coreHierarchy;
 
-    /** @var RoleHierarchyInterface */
-    private $nestedHierarchy;
-
     /** @var StaticRole[] */
     private $roles;
 
@@ -25,24 +21,7 @@ final class RoleCollection implements RoleHierarchyInterface
     public function __construct (RoleHierarchyInterface $coreHierarchy, array $config = [])
     {
         $this->coreHierarchy = $coreHierarchy;
-        $this->nestedHierarchy = $this->buildNestedHierarchy($config);
         $this->roles = $this->prepareRoleCollection($config);
-    }
-
-
-    /**
-     *
-     */
-    private function buildNestedHierarchy (array $config) : RoleHierarchyInterface
-    {
-        $map = [];
-
-        foreach ($config as $role => $data)
-        {
-            $map[$role] = $data["included_roles"] ?? [];
-        }
-
-        return new RoleHierarchy($map);
     }
 
 
@@ -100,12 +79,7 @@ final class RoleCollection implements RoleHierarchyInterface
     {
         $roles = $this->coreHierarchy->getReachableRoleNames($roles);
 
-        foreach ($this->nestedHierarchy->getReachableRoleNames($roles) as $additional)
-        {
-            $roles[] = $additional;
-        }
-
-        $result = \array_unique($roles);
+        $result = $roles;
 
         foreach ($roles as $role)
         {

@@ -37,14 +37,6 @@ final class StaticRole
 
 
     /**
-     * A list of all included role names
-     *
-     * @var string[]
-     */
-    private $includedRoles = [];
-
-
-    /**
      * A list of tags
      *
      * @var array
@@ -69,7 +61,6 @@ final class StaticRole
         ?string $title,
         ?string $description,
         bool $hidden,
-        array $includedRoles,
         array $tags,
         array $actions
     )
@@ -78,7 +69,6 @@ final class StaticRole
         $this->title = $title;
         $this->description = $description;
         $this->hidden = $hidden;
-        $this->includedRoles = $includedRoles;
         $this->tags = $tags;
         $this->actions = $actions;
     }
@@ -99,7 +89,6 @@ final class StaticRole
             $configuration["title"] ?? null,
             $configuration["description"] ?? null,
             $configuration["hidden"] ?? false,
-            $configuration["included_roles"] ?? [],
             $configuration["tags"] ?? [],
             $configuration["actions"] ?? []
         );
@@ -130,16 +119,6 @@ final class StaticRole
     public function getTags () : array
     {
         return $this->tags;
-    }
-
-
-
-    /**
-     * @return string[]
-     */
-    public function getIncludedRoles () : array
-    {
-        return $this->includedRoles;
     }
 
 
