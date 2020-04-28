@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Becklyn\StaticRolesBundle\:
+        resource: '../../*'
+        exclude: '../../{DependencyInjection,Exception,Resources,BecklynStaticRolesBundle.php}'
+
+    Becklyn\StaticRolesBundle\Role\RoleCollection:
+        decorates: 'security.role_hierarchy'
+        arguments:
+            $coreHierarchy: '@Becklyn\StaticRolesBundle\Role\RoleCollection.inner'

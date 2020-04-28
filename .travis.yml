@@ -1,21 +1,31 @@
 language: php
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
 
 git:
-    depth: 1
+  depth: 1
 
 php:
-  - 7.2
+  - "7.2"
+  - "7.4"
 
-before_script:
-    - composer require php-coveralls/php-coveralls
-    - composer self-update --stable
+before_install:
+  - composer require php-coveralls/php-coveralls --prefer-dist --no-interaction --no-progress
 
 install:
-    - composer install
+  - composer install --prefer-dist --no-interaction --no-progress
+  - composer global require ergebnis/composer-normalize bamarni/composer-bin-plugin --no-interaction --prefer-dist --no-progress --no-suggest --no-suggest
+  - composer bin all install --no-interaction --prefer-dist --no-progress --no-suggest
+  - mkdir -p build/logs
 
 script:
-    - mkdir -p build/logs
-    - ./vendor/bin/simple-phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
+  - composer normalize --indent-size 4 --indent-style space --dry-run
+  - ./vendor/bin/php-cs-fixer fix --diff --config vendor-bin/test/vendor/becklyn/php-cs/.php_cs.dist --dry-run --no-interaction
+  - ./vendor/bin/phpstan analyse --memory-limit 4G --ansi -c vendor-bin/test/vendor/becklyn/php-cs/phpstan/lib.neon src --no-interaction --no-progress
+  - ./vendor/bin/simple-phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml --testdox
 
 after_script:
-    - travis_retry php vendor/bin/php-coveralls
+  - travis_retry php vendor/bin/php-coveralls

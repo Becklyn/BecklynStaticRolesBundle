@@ -1,26 +1,49 @@
 {
     "name": "becklyn/static-roles-bundle",
-    "description": "This bundle provides a simple way to define all available roles and their hierarchy in your configuration",
-    "keywords": ["security", "symfony"],
-    "license": "BSD-3-Clause",
     "type": "symfony-bundle",
+    "description": "This bundle provides a simple way to define all available roles and their hierarchy in your configuration",
+    "keywords": [
+        "security",
+        "symfony"
+    ],
     "homepage": "https://github.com/Becklyn/BecklynStaticRolesBundle",
+    "license": "BSD-3-Clause",
     "authors": [
         {
-            "name": "Becklyn",
-            "homepage": "http://becklyn.com/"
+            "name": "Becklyn Studios",
+            "homepage": "https://becklyn.com/"
         }
     ],
     "require": {
-        "php": "^7.0",
-        "symfony/config": "^2.8|^3.0|^4.0",
-        "symfony/security-core": "^2.8|^3.0|^4.0"
+        "php": "^7.2",
+        "symfony/config": "^4.4 || ^5.0",
+        "symfony/dependency-injection": "^4.4 || ^5.0",
+        "symfony/form": "^4.4 || ^5.0",
+        "symfony/http-kernel": "^4.4 || ^5.0",
+        "symfony/options-resolver": "^4.4 || ^5.0",
+        "symfony/security-core": "^4.4 || ^5.0",
+        "twig/twig": "^2.10 || ^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0",
-        "symfony/phpunit-bridge": "^3.4|^4.0"
+        "symfony/phpunit-bridge": "^5.0"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev",
+            "dev-next": "1.x-dev"
+        }
     },
     "autoload": {
-        "psr-4": {"Becklyn\\StaticRolesBundle\\": ""}
+        "psr-4": {
+            "Becklyn\\StaticRolesBundle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Becklyn\\StaticRolesBundle\\": "tests"
+        }
     }
 }
